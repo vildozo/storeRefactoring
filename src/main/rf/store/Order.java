@@ -53,39 +53,55 @@ public class Order {
 	}
 
 	public float total() {
+		float totalWithShipping=0;
 		float totalItems = 0;
 		for (OrderItem item : items) {
 			float totalItem=0;
 			float itemAmount = item.getProduct().getUnitPrice() * item.getQuantity();
-			if (calculateTotalWhenAccessorries(item)) {
-				float booksDiscount = 0;
-				if (itemAmount >= 100) {
-					booksDiscount = calculatePercentageAmount(itemAmount,10);
-				}
-				totalItem = itemAmount - booksDiscount;
-			}
-			if (item.getProduct().getCategory() == ProductCategory.Bikes) {
-				// 20% discount for Bikes
+			if (isProductCategoryAnAccessorries(item)) 
+				totalItem = calculateTotalOfAccessoriesCategory(itemAmount);
+			if (isProductCategoryABikes(item)) 
 				totalItem = itemAmount - calculatePercentageAmount(itemAmount, 20);
-				//totalItem = itemAmount - itemAmount * 20 / 100;
-			}
-			if (item.getProduct().getCategory() == ProductCategory.Cloathing) {
-				float cloathingDiscount = 0;
-				if (item.getQuantity() > 2) {
-					cloathingDiscount = item.getProduct().getUnitPrice();
-				}
-				totalItem = itemAmount - cloathingDiscount;
-			}
+			if (isProductCategoryACloathing(item)) 
+				totalItem = calculateTotalOfClothingCategory(item, itemAmount);
 			totalItems += totalItem;
 		}
-
-		if (this.deliveryCountry == "USA"){
-			// total=totalItems + tax + 0 shipping
+		totalWithShipping=calculateTotalWithShipping(totalItems);
+		return totalWithShipping;
+	}
+	
+	private float calculateTotalWithShipping(float totalItems){
+		if (this.deliveryCountry == "USA")
 			return totalItems + calculatePercentageAmount(totalItems,5);
-		}
-
-		// total=totalItemst + tax + 15 shipping
 		return totalItems + calculatePercentageAmount(totalItems,5) + 15;
+		
+	}
+
+	private float calculateTotalOfClothingCategory(OrderItem item, float itemAmount) {
+		float totalItem;
+		float cloathingDiscount = 0;
+		if (item.getQuantity() > 2) {
+			cloathingDiscount = item.getProduct().getUnitPrice();
+		}
+		totalItem = itemAmount - cloathingDiscount;
+		return totalItem;
+	}
+
+	private float calculateTotalOfAccessoriesCategory(float itemAmount) {
+		float totalItem;
+		float booksDiscount = 0;
+		if (itemAmount >= 100) 
+			booksDiscount = calculatePercentageAmount(itemAmount,10);
+		totalItem = itemAmount - booksDiscount;
+		return totalItem;
+	}
+
+	private boolean isProductCategoryACloathing(OrderItem item) {
+		return item.getProduct().getCategory() == ProductCategory.Cloathing;
+	}
+
+	private boolean isProductCategoryABikes(OrderItem item) {
+		return item.getProduct().getCategory() == ProductCategory.Bikes;
 	}
 	
 	public float calculatePercentageAmount(float amount, float percent){
@@ -94,7 +110,7 @@ public class Order {
 	}
 	
 
-	private boolean calculateTotalWhenAccessorries(OrderItem item) {
+	private boolean isProductCategoryAnAccessorries(OrderItem item) {
 		return item.getProduct().getCategory() == ProductCategory.Accessories;
 	}
 }
