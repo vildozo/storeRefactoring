@@ -23,14 +23,20 @@ public class Salesman extends Employee {
 	}
 
 	public float netSalary() {
-		float benefits = monthQuota * commissionPorcentage / 100;
-		float pensionFounds = fixedSalary * 10 / 100;
+		float benefits = calculatePercentageAmount(monthQuota,commissionPorcentage);
+		float pensionFounds = calculatePercentageAmount(fixedSalary,10) ;
 		float tax = 0;
 		if (fixedSalary > 3500)
-			tax = fixedSalary * 5 / 100;
+			tax = calculatePercentageAmount(fixedSalary,5) ;
 		return fixedSalary+benefits - pensionFounds - tax;
 	}
 
+	public float calculatePercentageAmount(float amount, float percent){
+		float cent=100f;
+		return amount*percent/cent;
+	}
+	
+	
 	public void updateMonthQuota(float addQuota) {
 		monthQuota = monthQuota + addQuota;
 	}
