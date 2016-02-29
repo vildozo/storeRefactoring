@@ -18,4 +18,6 @@ public class Manager extends Employee {
 	private float salaryBenefits() {
 		return this.subordinates.size() * 20;
 	}
+	
+	
 }

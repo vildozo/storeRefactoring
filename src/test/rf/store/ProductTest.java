@@ -23,7 +23,7 @@ public class ProductTest {
 	public void serializeToXml() {
 		Product product = createProduct();
 
-		String xml = product.toXml();
+		String xml = product.convertToXmlFormat();
 
 		assertEquals("<product><name>Black Bike</name><category>Bikes</category></product>", xml);
 	}

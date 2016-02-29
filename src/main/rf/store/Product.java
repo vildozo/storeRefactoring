@@ -2,19 +2,10 @@ package rf.store;
 
 public class Product {
 
-	/* The Name */
 	public String name;
-
-	/* The UnitPrice */
 	public float unitPrice;
-
-	/* The Category */
 	public ProductCategory category;
-
-	/* The Image */
 	public ImageInfo image;
-
-	/* The Category */
 	public int unitsInStock;
 
 	public Product(String name, float unitPrice, ProductCategory category, ImageInfo image) {
@@ -48,7 +39,7 @@ public class Product {
 		this.unitsInStock = unitsInStock;
 	}
 
-	public String toXml() {
+	public String convertToXmlFormat() {
 		return "<product>" + "<name>" + name + "</name>" + "<category>"
 				+ category + "</category>" + "</product>";
 	}
